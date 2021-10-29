@@ -1,13 +1,5 @@
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
-
-
-def display_img(img):
-    fig = plt.figure(figsize=(14, 12))
-    ax = fig.add_subplot(111)
-    ax.imshow(img, cmap='gray')
-    plt.show()
 
 
 def corner_detector(img_col):
@@ -20,7 +12,7 @@ def corner_detector(img_col):
     for i in range(0, len(indexes), 15):
         var_indexes.append(indexes[i].astype('float32'))
 
-    ##  We can use commented code if you want to choose the 'best' corners, using criterias.
+    ##  We can use commented code if you want to choose the 'best' corners, using special criterias.
 
     # dst = cv2.dilate(dst, None)
     # ret, dst = cv2.threshold(dst, 0.05 * dst.max(), 255, 0)
@@ -33,11 +25,25 @@ def corner_detector(img_col):
     return var_indexes
 
 
-img_col = cv2.imread('plain_vision.jpg')
-var_indexes = corner_detector(img_col)
+cap = cv2.VideoCapture('flying.mp4')
 
-for new in var_indexes:
-    x_new, y_new = new[1], new[0]
-    frame = cv2.circle(img_col, (int(x_new), int(y_new)),
-                    3, (255, 0, 0), thickness=2)
-display_img(img_col)
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        print("1_ Can't receive frame (stream end?). Exiting ...")
+        break
+    true_indexes = corner_detector(frame)
+    for new in true_indexes:
+        x_new, y_new = new[1], new[0]
+        frame = cv2.circle(frame, (int(x_new), int(y_new)),
+                           3, (255, 0, 0), thickness=2)
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(20) == ord('q'):
+        break
+
+if ret is False:
+    print("Can't receive frame (stream end?). Exiting ...")
+    cap.release()
+cv2.destroyAllWindows()
+
+print(frame)
