@@ -1,0 +1,4 @@
+The angle detector takes the first image of the video stream and returns the coordinates the "best" angles in image matrix to the tracker module, which is based on the computing optical stream  with Lucas-Kanade algorithm.
+The result of the code's work is the showing of the loaded video, where the best corners in the first frame of the video stream are marked with rings, then the algorithm tracks and marks the tracked areas that can move with rings.
+I left the file with the airplane image so that you can experiment with the angle detector, the algorithm of which is implemented in the "corner_detector.py" file.
+ I did not delete the mp4 video file from repository, which shows the flight of an airplane in bad weather conditions, so that you do not waste your time searching for video resources for experimenting with the tracker implemented in the "tracker.py" file.
